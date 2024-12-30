@@ -41,7 +41,7 @@ const ComplianceCheck = () => {
             <Card>
               <Card.Body>
                 <Card.Title>Version {version}</Card.Title>
-                <Link to={`/version/${version}`} className="btn btn-primary">
+                <Link to={`/compliance-check/${version}`} className="btn btn-primary">
                   查看详情
                 </Link>
               </Card.Body>

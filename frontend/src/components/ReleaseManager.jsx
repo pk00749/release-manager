@@ -81,9 +81,9 @@ const ReleaseManager = () => {
                 value={formData.status}
                 onChange={(e) => setFormData({...formData, status: e.target.value})}
               >
-                <option value="planned">计划中</option>
-                <option value="in_progress">进行中</option>
-                <option value="completed">已完成</option>
+                <option value="pending">Pending</option>
+                <option value="in_progress">In progress</option>
+                <option value="released">Released</option>
               </Form.Select>
             </Form.Group>
 
