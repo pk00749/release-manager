@@ -32,7 +32,7 @@ const Services = () => {
                   {service.description}
                 </Card.Text>
                 <Link 
-                  to={`/${service.id}`} 
+                  to={`/${service.id}/versions`}
                   className="btn btn-primary w-100"
                 >
                   查看服务

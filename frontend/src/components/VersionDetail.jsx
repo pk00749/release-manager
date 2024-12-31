@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -25,20 +25,16 @@ const formatDisplayValue = (value) => {
 };
 
 const VersionDetail = () => {
-  const { version } = useParams();
+  const { serviceId, version } = useParams();
   const navigate = useNavigate();
   const [versionInfo, setVersionInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  useEffect(() => {
-    fetchVersionInfo();
-  }, [version]);
-
-  const fetchVersionInfo = async () => {
+  const fetchVersionInfo = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/version/${version}`);
+      const response = await fetch(`http://localhost:5000/api/versions/${serviceId}/${version}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -49,11 +45,15 @@ const VersionDetail = () => {
       console.error('Error fetching version info:', error);
       setError('无法获取版本信息');
     }
-  };
+  }, [serviceId, version]);
+
+  useEffect(() => {
+    fetchVersionInfo();
+  }, [fetchVersionInfo]);
 
   const handleUpdate = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/version/${version}`, {
+      const response = await fetch(`http://localhost:5000/api/versions/${serviceId}/${version}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -154,7 +154,7 @@ const VersionDetail = () => {
               <Button 
                 variant="secondary" 
                 className="ms-2" 
-                onClick={() => navigate('/')}
+                onClick={() => navigate(`/${serviceId}/versions`)}
               >
                 返回列表
               </Button>
