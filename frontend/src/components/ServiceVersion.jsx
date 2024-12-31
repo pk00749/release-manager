@@ -3,13 +3,13 @@ import { Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 
 const ServiceVersion = () => {
-  const { serviceId } = useParams();  // 添加 serviceId 参数
+  const { serviceId } = useParams();
   const [versions, setVersions] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchVersions();
-  }, [serviceId]);  // 添加 serviceId 依赖
+  }, [serviceId]);
 
   const fetchVersions = async () => {
     try {
@@ -18,7 +18,21 @@ const ServiceVersion = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setVersions(data);
+      
+      // 按版本号排序（倒序）
+      const sortedVersions = [...data].sort((a, b) => {
+        const aParts = a.split('.').map(Number);
+        const bParts = b.split('.').map(Number);
+        
+        for (let i = 0; i < aParts.length; i++) {
+          if (aParts[i] !== bParts[i]) {
+            return bParts[i] - aParts[i];  // 改为倒序
+          }
+        }
+        return 0;
+      });
+      
+      setVersions(sortedVersions);
       setError(null);
     } catch (error) {
       console.error('Error fetching versions:', error);
@@ -28,7 +42,7 @@ const ServiceVersion = () => {
 
   return (
     <Container className="mt-5">
-      <h1 className="mb-4">{serviceId} Versions</h1>
+      <h1 className="mb-4">{serviceId}</h1>
       
       {error && (
         <Alert variant="danger" className="mb-4">
@@ -41,7 +55,7 @@ const ServiceVersion = () => {
           <Col key={version} md={4} className="mb-4">
             <Card>
               <Card.Body>
-                <Card.Title>Version {version}</Card.Title>
+                <Card.Title>v{version}</Card.Title>
                 <Link to={`/${serviceId}/${version}`} className="btn btn-primary">
                   查看详情
                 </Link>
