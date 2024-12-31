@@ -46,45 +46,48 @@
 .version-link {
   color: #0d6efd;
   cursor: pointer;
-  font-weight: 600;
-  position: relative;
-  display: inline-block;
-  padding: 2px 4px;
+  font-weight: normal;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-decoration: none;
   transition: all 0.2s ease;
+  border: 1px solid transparent;
 }
 
 .version-link:hover {
   color: #0a58ca;
-  background-color: rgba(13, 110, 253, 0.1);
-  border-radius: 4px;
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .version-link::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  bottom: 0;
-  left: 0;
-  background-color: #0d6efd;
-  transform: scaleX(0);
-  transform-origin: bottom right;
-  transition: transform 0.3s ease;
+  content: '›';
+  margin-left: 4px;
+  font-size: 1.2em;
+  line-height: 1;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.2s ease;
 }
 
 .version-link:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-
-.version-link::before {
-  content: '🔗';
-  font-size: 0.8em;
-  margin-right: 4px;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.version-link:hover::before {
   opacity: 1;
+  transform: translateX(0);
+}
+
+.version-link:active {
+  transform: translateY(1px);
+  background-color: #e9ecef;
+}
+
+.version-link {
+  border-bottom: 1px dashed #0d6efd;
+}
+
+.version-link:hover {
+  border-bottom-style: solid;
 }

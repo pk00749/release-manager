@@ -128,6 +128,7 @@ const ServiceVersion = () => {
                   onClick={() => handleVersionClick(version.version)}
                   title="Click to view details"
                 >
+                  <i className="fas fa-external-link-alt me-1" style={{ fontSize: '0.8em' }}></i>
                   {version.version}
                 </span>
               </td>
