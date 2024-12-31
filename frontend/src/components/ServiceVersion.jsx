@@ -57,7 +57,7 @@ const ServiceVersion = () => {
               <Card.Body>
                 <Card.Title>v{version}</Card.Title>
                 <Link to={`/${serviceId}/${version}`} className="btn btn-primary">
-                  查看详情
+                  Details
                 </Link>
               </Card.Body>
             </Card>

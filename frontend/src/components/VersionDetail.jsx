@@ -150,13 +150,13 @@ const VersionDetail = () => {
               <p><strong>Status:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
               <p><strong>Release Date:</strong> {versionInfo.release_date}</p>
               <p><strong>Test Result:</strong> {TEST_RESULT_MAPPING[versionInfo.test_result] || formatDisplayValue(versionInfo.test_result)}</p>
-              <Button variant="primary" onClick={() => setIsEditing(true)}>编辑</Button>
+              <Button variant="primary" onClick={() => setIsEditing(true)}>Edit</Button>
               <Button 
                 variant="secondary" 
                 className="ms-2" 
                 onClick={() => navigate(`/${serviceId}/versions`)}
               >
-                返回列表
+                Return
               </Button>
             </>
           )}

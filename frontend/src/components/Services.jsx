@@ -35,7 +35,7 @@ const Services = () => {
                   to={`/${service.id}/versions`}
                   className="btn btn-primary w-100"
                 >
-                  查看版本
+                  Releases
                 </Link>
               </Card.Body>
             </Card>
