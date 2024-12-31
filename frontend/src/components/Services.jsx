@@ -13,7 +13,7 @@ const iconMapping = {
 
 const Services = () => {
   return (
-    <Container className="mt-5">
+    <Container className="main-container">
       <h1 className="mb-4">Services</h1>
       <Row>
         {servicesList.services.map((service) => (

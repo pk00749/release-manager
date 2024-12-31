@@ -12,4 +12,12 @@
 
 .btn-primary {
   border-radius: 5px;
+}
+
+.navbar {
+  margin-bottom: 0 !important;
+}
+
+.main-container {
+  padding-top: 2rem;
 } 

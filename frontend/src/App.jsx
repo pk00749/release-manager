@@ -4,10 +4,12 @@ import Services from './components/Services';
 import ServiceVersion from './components/ServiceVersion';
 import ReleaseManager from './components/ReleaseManager';
 import VersionDetail from './components/VersionDetail';
+import NavBar from './components/NavBar';
 
 function App() {
   return (
     <Router>
+      <NavBar />
       <Routes>
         <Route path="/" element={<Navigate to="/services" replace />} />
         <Route path="/services" element={<Services />} />

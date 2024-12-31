@@ -78,10 +78,10 @@ const VersionDetail = () => {
     }
   };
 
-  if (!versionInfo) return <Container className="mt-5"><div>Loading...</div></Container>;
+  if (!versionInfo) return <Container className="main-container"><div>Loading...</div></Container>;
 
   return (
-    <Container className="mt-5">
+    <Container className="main-container">
       <h1 className="mb-4">v{version}</h1>
       
       {error && (

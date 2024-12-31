@@ -41,7 +41,7 @@ const ServiceVersion = () => {
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="main-container">
       <h1 className="mb-4">{serviceId}</h1>
       
       {error && (
