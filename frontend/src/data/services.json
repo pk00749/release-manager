@@ -3,14 +3,14 @@
     {
       "id": "compliance-check",
       "name": "Compliance Check",
-      "description": "合规检查服务 - 管理和追踪版本发布状态",
+      "description": "合规性检查服务",
       "icon": "check-circle"
     },
     {
       "id": "airflow",
       "name": "Airflow",
-      "description": "工作流编排服务 - 管理数据管道和任务调度",
-      "icon": "wind"
+      "description": "工作流调度服务",
+      "icon": "stream"
     }
   ]
 } 
