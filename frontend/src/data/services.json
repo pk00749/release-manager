@@ -1,0 +1,16 @@
+{
+  "services": [
+    {
+      "id": "compliance-check",
+      "name": "Compliance Check",
+      "description": "合规检查服务 - 管理和追踪版本发布状态",
+      "icon": "check-circle"
+    },
+    {
+      "id": "airflow",
+      "name": "Airflow",
+      "description": "工作流编排服务 - 管理数据管道和任务调度",
+      "icon": "wind"
+    }
+  ]
+} 
