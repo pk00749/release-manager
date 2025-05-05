@@ -120,7 +120,7 @@ const VersionDetail = () => {
                   ))}
                 </Form.Select>
               </Form.Group>
-
+              <p>---------------------------------------------------------</p>
               <Form.Group className="mb-3">
                 <Form.Label>PROD Status</Form.Label>
                 <Form.Select
@@ -132,6 +132,72 @@ const VersionDetail = () => {
                   ))}
                 </Form.Select>
               </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>PROD CR</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={versionInfo.prod_cr || ''}
+                  onChange={(e) => setVersionInfo({...versionInfo, prod_cr: e.target.value})}
+                  placeholder="CHG"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Jira Issue</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={versionInfo.jira_issue || ''}
+                  onChange={(e) => setVersionInfo({...versionInfo, jira_issue: e.target.value})}
+                  placeholder="Jira编号"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>GitHub Pull Request</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={versionInfo.github_pull_request || ''}
+                  onChange={(e) => setVersionInfo({...versionInfo, github_pull_request: e.target.value})}
+                  placeholder="PR链接"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>SonarQube Scan</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={versionInfo.sonarqube_scan || ''}
+                  onChange={(e) => setVersionInfo({...versionInfo, sonarqube_scan: e.target.value})}
+                  placeholder="扫描结果链接"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Cyberflows SAST Scan</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={versionInfo.cyberflows_sast_scan || ''}
+                  onChange={(e) => setVersionInfo({...versionInfo, cyberflows_sast_scan: e.target.value})}
+                  placeholder="SAST扫描结果"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Cyberflows CONT Scan</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={versionInfo.cyberflows_cont_scan || ''}
+                  onChange={(e) => setVersionInfo({...versionInfo, cyberflows_cont_scan: e.target.value})}
+                  placeholder="CONT扫描结果"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>ICE</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={versionInfo.ice || ''}
+                  onChange={(e) => setVersionInfo({...versionInfo, ice: e.target.value})}
+                  placeholder="ICE编号"
+                />
+              </Form.Group>
+
+
+
 
               <Form.Group className="mb-3">
                 <Form.Label>Release Date</Form.Label>
@@ -176,11 +242,11 @@ const VersionDetail = () => {
               <p><strong>PROD Status:</strong> {STATUS_MAPPING[versionInfo.prod_status] || formatDisplayValue(versionInfo.prod_status)}</p>
               <p><strong>PROD CR:</strong> {versionInfo.prod_cr}</p>
               <p><strong>Jira Issue:</strong> {versionInfo.prod_cr}</p>
-              <p><strong>GitHub Pull Request:</strong> {versionInfo.prod_cr}</p>
-              <p><strong>SonarQube Scan:</strong> {versionInfo.prod_cr}</p>
-              <p><strong>Cyberflows SAST Scan:</strong> {versionInfo.prod_cr}</p>
-              <p><strong>Cyberflows CONT Scan:</strong> {versionInfo.prod_cr}</p>
-              <p><strong>ICE:</strong> {versionInfo.prod_cr}</p>
+              <p><strong>GitHub Pull Request:</strong> {versionInfo.github_pull_request}</p>
+              <p><strong>SonarQube Scan:</strong> {versionInfo.sonarqube_scan}</p>
+              <p><strong>Cyberflows SAST Scan:</strong> {versionInfo.cyberflows_sast_scan}</p>
+              <p><strong>Cyberflows CONT Scan:</strong> {versionInfo.cyberflows_cont_scan}</p>
+              <p><strong>ICE:</strong> {versionInfo.ice}</p>
               <p><strong>Release Date:</strong> {versionInfo.release_date}</p>
               <p><strong>Test Result:</strong> {TEST_RESULT_MAPPING[versionInfo.test_result] || formatDisplayValue(versionInfo.test_result)}</p>
               <Button variant="primary" onClick={() => setIsEditing(true)}>Edit</Button>
