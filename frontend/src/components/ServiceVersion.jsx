@@ -58,7 +58,11 @@ const ServiceVersion = () => {
 
   const fetchVersions = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/${serviceId}/versions`);
+      const response = await fetch(`http://localhost:5001/${serviceId}`, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -67,7 +71,7 @@ const ServiceVersion = () => {
       // 获取每个版本的详细信息
       const versionDetails = await Promise.all(
         versionList.map(async (version) => {
-          const detailResponse = await fetch(`http://localhost:5000/api/versions/${serviceId}/${version}`);
+          const detailResponse = await fetch(`http://localhost:5001/${serviceId}/${version}`);
           if (!detailResponse.ok) {
             throw new Error(`Error fetching version details: ${detailResponse.status}`);
           }

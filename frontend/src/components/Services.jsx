@@ -13,20 +13,26 @@ const Services = () => {
   useEffect(() => {
     const fetchApps = async () => {
       try {
-        const response = await fetch('http://localhost:6000'); // 确保使用6000端口
+        const response = await fetch('http://localhost:5001', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
         const data = await response.json();
+        if (!Array.isArray(data)) {
+          throw new Error('Invalid data format from API');
+        }
         setApps(data);
       } catch (error) {
-        console.error('Error fetching apps:', error);
-        setError(error.message);
-        // 使用本地数据作为fallback
-//         setApps(Object.keys(servicesList.services.reduce((acc, service) => {
-//           acc[service.id] = true;
-//           return acc;
-//         }, {})));
+        console.error('Fetch error:', error);
+        setError(`Failed to load apps. ${error.message}`);
+        // Fallback empty array
+        setApps([]);
       } finally {
         setLoading(false);
       }

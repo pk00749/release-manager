@@ -4,13 +4,7 @@ import os
 import json
 
 app = Flask(__name__)
-CORS(app, resources={
-    r"/*": {
-        "origins": ["http://localhost:3000", "https://localhost:6000"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]
-    }
-})
+CORS(app, resources={r"/*": {"origins": "*"}})
 DATA_DIR = 'data'
 
 # 读取 apps.json
@@ -83,4 +77,4 @@ def deploy_to_prod(app_name, tag_name):
     return jsonify({"message": "Deployed to production environment successfully"})
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=6000, debug=True)
+    app.run(host='localhost', port=5001, debug=True)
