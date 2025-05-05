@@ -1,88 +1,86 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS
+from flask import Flask, request, jsonify
+from flask_cors import CORS  # Add this import
 import os
 import json
-from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)
-
-def create_initial_version(service_id):
-    """创建服务的初始版本文件"""
-    versions_dir = os.path.join('versions', service_id)
-    
-    # 如果服务目录不存在，创建它
-    if not os.path.exists(versions_dir):
-        os.makedirs(versions_dir)
-        
-    # 创建初始版本文件
-    initial_version = {
-        "version": "1.0.0",
-        "status": "not_started",
-        "release_date": (datetime.now().replace(month=12, day=31)).strftime("%Y-%m-%d"),
-        "test_result": "not_tested"
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:3000", "https://localhost:6000"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
     }
-    
-    version_file = os.path.join(versions_dir, '1.0.0.json')
-    with open(version_file, 'w') as f:
-        json.dump(initial_version, f, indent=4)
-    
-    return initial_version
+})
+DATA_DIR = 'data'
 
-# 获取服务的版本列表
-@app.route('/api/<service_id>/versions')
-def get_service_versions(service_id):
+# 读取 apps.json
+def read_apps_json():
     try:
-        versions_dir = os.path.join('versions', service_id)
-        
-        # 如果服务目录不存在，创建初始版本
-        if not os.path.exists(versions_dir):
-            create_initial_version(service_id)
-            
-        # 列出目录下的所有json文件
-        version_files = [f for f in os.listdir(versions_dir) if f.endswith('.json')]
-        versions = [os.path.splitext(f)[0] for f in version_files]
-        
+        with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'services.json'), 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+# 主页面
+@app.route('/')
+def index():
+    apps = read_apps_json()
+    return jsonify(list(apps.keys()))
+
+# 应用页面
+@app.route('/<app_name>')
+def app_page(app_name):
+    version_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'versions', app_name)
+    if os.path.isdir(version_dir):
+        versions = [f.replace('.json', '') for f in os.listdir(version_dir) if f.endswith('.json')]
         return jsonify(versions)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    else:
+        return jsonify({"error": "App not found"}), 404
 
-# 获取特定版本的详细信息
-@app.route('/api/versions/<service_id>/<version>')
-def get_version_detail(service_id, version):
-    try:
-        file_path = os.path.join('versions', service_id, f'{version}.json')
-        
-        # 如果文件不存在且是请求1.0.0版本，创建初始版本
-        if not os.path.exists(file_path) and version == '1.0.0':
-            version_data = create_initial_version(service_id)
-            return jsonify(version_data)
-        elif not os.path.exists(file_path):
-            return jsonify({'error': 'Version not found'}), 404
-            
-        with open(file_path, 'r') as f:
-            data = json.load(f)
-        return jsonify(data)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-# 更新版本信息
-@app.route('/api/versions/<service_id>/<version>', methods=['PUT'])
-def update_version(service_id, version):
-    try:
-        file_path = os.path.join('versions', service_id, f'{version}.json')
-        if not os.path.exists(file_path):
-            return jsonify({'error': 'Version not found'}), 404
-
+# tag 页面
+@app.route('/<app_name>/<tag_name>', methods=['GET', 'POST'])
+def tag_page(app_name, tag_name):
+    tag_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'versions', app_name, f'{tag_name}.json')
+    if request.method == 'GET':
+        try:
+            with open(tag_file, 'r') as f:
+                data = json.load(f)
+                # 添加GitHub仓库链接
+                apps = read_apps_json()
+                data['github_repo'] = apps.get(app_name, '')
+                return jsonify(data)
+        except FileNotFoundError:
+            return jsonify({"error": "Tag not found"}), 404
+    elif request.method == 'POST':
         data = request.get_json()
-        
-        # 保存更新后的数据
-        with open(file_path, 'w') as f:
-            json.dump(data, f, indent=4)
-            
-        return jsonify({'message': 'Version updated successfully'})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        try:
+            # 确保目录存在
+            os.makedirs(os.path.dirname(tag_file), exist_ok=True)
+            with open(tag_file, 'w') as f:
+                json.dump(data, f)
+            return jsonify({"message": "Tag info saved successfully"})
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+@app.route('/<app_name>/<tag_name>/create-uat-cr', methods=['POST'])
+def create_uat_cr(app_name, tag_name):
+    # 这里添加调用Jira API创建UAT CR的逻辑
+    return jsonify({"message": "UAT CR created successfully", "cr_number": "CR-123"})
+
+@app.route('/<app_name>/<tag_name>/deploy-test', methods=['POST'])
+def deploy_to_test(app_name, tag_name):
+    # 这里添加调用Jenkins API部署到测试环境的逻辑
+    return jsonify({"message": "Deployed to test environment successfully"})
+
+@app.route('/<app_name>/<tag_name>/create-prod-cr', methods=['POST'])
+def create_prod_cr(app_name, tag_name):
+    # 这里添加调用Jira API创建生产CR的逻辑
+    return jsonify({"message": "Production CR created successfully", "cr_number": "CR-456"})
+
+@app.route('/<app_name>/<tag_name>/deploy-prod', methods=['POST'])
+def deploy_to_prod(app_name, tag_name):
+    # 这里添加调用Jenkins API部署到生产环境的逻辑
+    return jsonify({"message": "Deployed to production environment successfully"})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='localhost', port=6000, debug=True)
