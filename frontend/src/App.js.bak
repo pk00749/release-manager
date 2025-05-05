@@ -1,0 +1,131 @@
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
+
+function App() {
+    const [apps, setApps] = useState([]);
+
+    useEffect(() => {
+        fetchApps();
+    }, []);
+
+    const fetchApps = async () => {
+        try {
+            const response = await fetch('http://localhost:6000');
+            const data = await response.json();
+            setApps(data);
+        } catch (error) {
+            console.error('Error fetching apps:', error);
+        }
+    };
+
+    return (
+        <Router>
+            <div className="App">
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <div>
+                                <h1>Apps</h1>
+                                {apps.map((app) => (
+                                    <Link key={app} to={`/${app}`}>
+                                        <button>{app}</button>
+                                    </Link>
+                                ))}
+                            </div>
+                        }
+                    />
+                    <Route
+                        path="/:appName"
+                        element={<AppPage />}
+                    />
+                    <Route
+                        path="/:appName/:tagName"
+                        element={<TagPage />}
+                    />
+                </Routes>
+            </div>
+        </Router>
+    );
+}
+
+function AppPage() {
+    const [versions, setVersions] = useState([]);
+    const { appName } = useParams();
+
+    useEffect(() => {
+        fetchVersions(appName);
+    }, [appName]);
+
+    const fetchVersions = async (appName) => {
+        try {
+            const response = await fetch(`http://localhost:6000/${appName}`);
+            const data = await response.json();
+            setVersions(data);
+        } catch (error) {
+            console.error('Error fetching versions:', error);
+        }
+    };
+
+    return (
+        <div>
+            <h1>{appName}</h1>
+            {versions.map((version) => (
+                <Link key={version} to={`/${appName}/${version}`}>
+                    <button>{version}</button>
+                </Link>
+            ))}
+        </div>
+    );
+}
+
+function TagPage() {
+    const [tagInfo, setTagInfo] = useState({});
+    const { appName, tagName } = useParams();
+
+    useEffect(() => {
+        fetchTagInfo(appName, tagName);
+    }, [appName, tagName]);
+
+    const fetchTagInfo = async (appName, tagName) => {
+        try {
+            const response = await fetch(`http://localhost:6000/${appName}/${tagName}`);
+            const data = await response.json();
+            setTagInfo(data);
+        } catch (error) {
+            console.error('Error fetching tag info:', error);
+        }
+    };
+
+    const handleSave = async () => {
+        try {
+            const response = await fetch(`http://localhost:6000/${appName}/${tagName}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tagInfo),
+            });
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error('Error saving tag info:', error);
+        }
+    };
+
+    return (
+        <div>
+            <h1>{tagName} 详情页面</h1>
+            <input
+                type="text"
+                placeholder="Jira Issue Number"
+                value={tagInfo.jiraIssue || ''}
+                onChange={(e) => setTagInfo({ ...tagInfo, jiraIssue: e.target.value })}
+            />
+            <button onClick={handleSave}>保存</button>
+        </div>
+    );
+}
+
+export default App;

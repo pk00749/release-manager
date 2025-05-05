@@ -34,7 +34,7 @@ const VersionDetail = () => {
 
   const fetchVersionInfo = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/versions/${serviceId}/${version}`);
+      const response = await fetch(`http://localhost:6000/api/versions/${serviceId}/${version}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -53,7 +53,7 @@ const VersionDetail = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/versions/${serviceId}/${version}`, {
+      const response = await fetch(`http://localhost:6000/api/versions/${serviceId}/${version}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

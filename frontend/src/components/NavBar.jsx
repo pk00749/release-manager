@@ -19,7 +19,7 @@ const NavBar = () => {
 
   // 处理服务选择
   const handleServiceSelect = (serviceId) => {
-    navigate(`/${serviceId}/versions`);
+    navigate(`/${serviceId}`);
   };
 
   return (
