@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faStream } from '@fortawesome/free-solid-svg-icons';
-import servicesList from '../data/services.json';
+// import servicesList from '../data/services.json';
 
 const Services = () => {
   const [apps, setApps] = useState([]);
@@ -23,10 +23,10 @@ const Services = () => {
         console.error('Error fetching apps:', error);
         setError(error.message);
         // 使用本地数据作为fallback
-        setApps(Object.keys(servicesList.services.reduce((acc, service) => {
-          acc[service.id] = true;
-          return acc;
-        }, {})));
+//         setApps(Object.keys(servicesList.services.reduce((acc, service) => {
+//           acc[service.id] = true;
+//           return acc;
+//         }, {})));
       } finally {
         setLoading(false);
       }
