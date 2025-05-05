@@ -41,7 +41,15 @@ def initial_version_info(apps, app_name, tag_name):
         "github_repo": apps.get(app_name, '') + "/tag/" + tag_name,
         "status": "not_started",
         "release_date": "",
-        "test_result": "not_tested"
+        "test_result": "not_tested",
+        "uat_cr": "",
+        "jira_issue": "",
+        "github_pull_request": "",
+        "sonarqube_scan": "",
+        "cyberflows_sast_scan": "",
+        "cyberflows_cont_scan": "",
+        "ice": "",
+        "prod_cr": ""
     }
 
     with open(version_file, 'w') as ver_file:

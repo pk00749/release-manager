@@ -118,9 +118,9 @@ const ServiceVersion = () => {
         <thead>
           <tr>
             <th>Version</th>
-            <th>Status</th>
+            <th>UAT Status</th>
+            <th>PROD Status</th>
             <th>Release Date</th>
-            <th>Test Result</th>
           </tr>
         </thead>
         <tbody>
@@ -141,12 +141,12 @@ const ServiceVersion = () => {
                   {STATUS_MAPPING[version.status] || version.status}
                 </Badge>
               </td>
-              <td>{version.release_date}</td>
               <td>
-                <Badge bg={getTestResultVariant(version.test_result)}>
-                  {TEST_RESULT_MAPPING[version.test_result] || version.test_result}
+                <Badge bg={getStatusVariant(version.status)}>
+                  {STATUS_MAPPING[version.status] || version.status}
                 </Badge>
               </td>
+              <td>{version.release_date}</td>
             </tr>
           ))}
         </tbody>

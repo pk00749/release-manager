@@ -101,6 +101,15 @@ const VersionDetail = () => {
           {isEditing ? (
             <Form>
               <Form.Group className="mb-3">
+                <Form.Label>UAT CR</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={versionInfo.uat_cr || ''}
+                  onChange={(e) => setVersionInfo({...versionInfo, uat_cr: e.target.value})}
+                  placeholder="CHG"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
                 <Form.Label>UAT Status</Form.Label>
                 <Form.Select
                   value={versionInfo.status}
@@ -158,7 +167,7 @@ const VersionDetail = () => {
           ) : (
             <>
               <p><strong>UAT Status:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
-              <p><strong>UAT CR:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}<Button
+              <p><strong>UAT CR:</strong> {versionInfo.uat_cr}<Button
                 variant="secondary"
                 className="ms-2"
                 onClick={() => navigate(`/${serviceId}/versions`)}
@@ -190,4 +199,4 @@ const VersionDetail = () => {
   );
 };
 
-export default VersionDetail; 
+export default VersionDetail;
