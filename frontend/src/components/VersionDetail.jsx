@@ -101,7 +101,19 @@ const VersionDetail = () => {
           {isEditing ? (
             <Form>
               <Form.Group className="mb-3">
-                <Form.Label>Status</Form.Label>
+                <Form.Label>UAT Status</Form.Label>
+                <Form.Select
+                  value={versionInfo.status}
+                  onChange={(e) => setVersionInfo({...versionInfo, status: e.target.value})}
+                >
+                  {Object.entries(STATUS_MAPPING).map(([value, label]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>PROD Status</Form.Label>
                 <Form.Select
                   value={versionInfo.status}
                   onChange={(e) => setVersionInfo({...versionInfo, status: e.target.value})}
@@ -145,7 +157,21 @@ const VersionDetail = () => {
             </Form>
           ) : (
             <>
-              <p><strong>Status:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
+              <p><strong>UAT Status:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
+              <p><strong>UAT CR:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}<Button
+                variant="secondary"
+                className="ms-2"
+                onClick={() => navigate(`/${serviceId}/versions`)}
+              >Check</Button></p>
+              <p>---------------------------------------------------------</p>
+              <p><strong>PROD Status:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
+              <p><strong>PROD CR:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
+              <p><strong>Jira Issue:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
+              <p><strong>GitHub Pull Request:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
+              <p><strong>SonarQube Scan:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
+              <p><strong>Cyberflows SAST Scan:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
+              <p><strong>Cyberflows CONT Scan:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
+              <p><strong>ICE:</strong> {STATUS_MAPPING[versionInfo.status] || formatDisplayValue(versionInfo.status)}</p>
               <p><strong>Release Date:</strong> {versionInfo.release_date}</p>
               <p><strong>Test Result:</strong> {TEST_RESULT_MAPPING[versionInfo.test_result] || formatDisplayValue(versionInfo.test_result)}</p>
               <Button variant="primary" onClick={() => setIsEditing(true)}>Edit</Button>
