@@ -82,7 +82,7 @@ const VersionDetail = () => {
 
   return (
     <Container className="main-container">
-      <h1 className="mb-4">v{version}</h1>
+      <h1 className="mb-4">{serviceId}-v{version}</h1>
       
       {error && (
         <Alert variant="danger" className="mb-4">
