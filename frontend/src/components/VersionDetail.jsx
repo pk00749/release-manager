@@ -133,7 +133,7 @@ const VersionDetail = () => {
                 </Form.Select>
               </Form.Group>
 
-              <Button variant="primary" onClick={handleUpdate}>保存</Button>
+              <Button variant="primary" onClick={handleUpdate}>Save</Button>
               <Button 
                 variant="secondary" 
                 className="ms-2" 
@@ -141,9 +141,7 @@ const VersionDetail = () => {
                   setIsEditing(false);
                   fetchVersionInfo();
                 }}
-              >
-                取消
-              </Button>
+              >Cancel</Button>
             </Form>
           ) : (
             <>

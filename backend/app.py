@@ -31,20 +31,38 @@ def app_page(app_name):
     else:
         return jsonify({"error": "App not found"}), 404
 
+
+def initial_version_info(apps, app_name, tag_name):
+    version_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'versions', app_name, tag_name+'.json')
+
+    # 创建初始版本文件
+    initial_info = {
+        "version": tag_name,
+        "github_repo": apps.get(app_name, '') + "/tag/" + tag_name,
+        "status": "not_started",
+        "release_date": "",
+        "test_result": "not_tested"
+    }
+
+    with open(version_file, 'w') as ver_file:
+        json.dump(initial_info, ver_file, indent=4)
+        return initial_info
+
 # tag 页面
 @app.route('/<app_name>/<tag_name>', methods=['GET', 'POST'])
 def tag_page(app_name, tag_name):
     tag_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'versions', app_name, f'{tag_name}.json')
     if request.method == 'GET':
+        apps = read_apps_json()
         try:
             with open(tag_file, 'r') as f:
                 data = json.load(f)
                 # 添加GitHub仓库链接
-                apps = read_apps_json()
-                data['github_repo'] = apps.get(app_name, '')
+                data['github_repo'] = apps.get(app_name, '') + "/tag/" + tag_name
                 return jsonify(data)
         except FileNotFoundError:
-            return jsonify({"error": "Tag not found"}), 404
+            data = initial_version_info(apps, app_name, tag_name)
+            return jsonify(data)
     elif request.method == 'POST':
         data = request.get_json()
         try:
