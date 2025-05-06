@@ -249,13 +249,50 @@ const VersionDetail = () => {
               <p><strong>ICE:</strong> {versionInfo.ice}</p>
               <p><strong>Release Date:</strong> {versionInfo.release_date}</p>
               <p><strong>Test Result:</strong> {TEST_RESULT_MAPPING[versionInfo.test_result] || formatDisplayValue(versionInfo.test_result)}</p>
+              <div className="mb-3" style={{ display: 'flex', gap: '10px' }}>
+                <Button
+                  variant="info"
+                  onClick={async () => {
+                    try {
+                      const res = await fetch(`http://localhost:5001/${serviceId}/${version}/update-ice`, { method: 'POST' });
+                      if (!res.ok) throw new Error('Fail to update ICE');
+                      alert('ICE Updated');
+                    } catch (e) {
+                      alert('更新ICE失败');
+                    }
+                  }}>Update ICE
+                </Button>
+                <Button
+                  variant="warning"
+                  onClick={async () => {
+                    try {
+                      const res = await fetch(`http://localhost:5001/${serviceId}/${version}/deploy-test`, { method: 'POST' });
+                      if (!res.ok) throw new Error('Fail to deploy UAT.');
+                      alert('UAT deployed');
+                    } catch (e) {
+                      alert('Fail to deploy UAT.');
+                    }
+                  }}>Deploy to UAT
+                </Button>
+                <Button
+                  variant="success"
+                  onClick={async () => {
+                    try {
+                      const res = await fetch(`http://localhost:5001/${serviceId}/${version}/deploy-prod`, { method: 'POST' });
+                      if (!res.ok) throw new Error('发布PROD失败');
+                      alert('PROD已发布');
+                    } catch (e) {
+                      alert('Fail to deploy PROD.');
+                    }
+                  }}>Deploy to PROD
+                </Button>
+              </div>
               <Button variant="primary" onClick={() => setIsEditing(true)}>Edit</Button>
               <Button 
                 variant="secondary" 
                 className="ms-2" 
                 onClick={() => navigate(`/${serviceId}/versions`)}
-              >
-                Return
+              >Return
               </Button>
             </>
           )}
