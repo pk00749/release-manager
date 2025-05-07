@@ -1,1 +1,1 @@
-ENABLE_SSO = False  # 新增：是否启用SSO登录
+ENABLE_SSO = True  # 新增：是否启用SSO登录

@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, session
 from flask_cors import CORS  # Add this import
 import os
 import json
-import config  # 确保config.py在同级目录
+from backend import config  # 修改为相对导入
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
