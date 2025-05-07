@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from flask_cors import CORS  # Add this import
 import os
 import json
+import config  # 确保config.py在同级目录
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -102,6 +103,17 @@ def create_prod_cr(app_name, tag_name):
 def deploy_to_prod(app_name, tag_name):
     # 这里添加调用Jenkins API部署到生产环境的逻辑
     return jsonify({"message": "Deployed to production environment successfully"})
+
+@app.route('/sso/config', methods=['GET'])
+def sso_config():
+    return jsonify({"enable_sso": getattr(config, "ENABLE_SSO", False)})
+
+# 可选：模拟SSO登录接口
+@app.route('/sso/login', methods=['POST'])
+def sso_login():
+    # 这里可集成真实SSO，这里仅模拟
+    session['user'] = 'sso_user'
+    return jsonify({"success": True, "user": "sso_user"})
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5001, debug=True)

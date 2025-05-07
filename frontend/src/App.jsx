@@ -4,6 +4,7 @@ import Services from './components/Services';
 import ServiceVersion from './components/ServiceVersion';
 import VersionDetail from './components/VersionDetail';
 import NavBar from './components/NavBar';
+import Login from './components/Login';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Services />} />
         <Route path="/:serviceId" element={<ServiceVersion />} />
         <Route path="/:serviceId/:version" element={<VersionDetail />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
