@@ -12,12 +12,6 @@ app.secret_key = 'your-secret-key'  # 用于session加密
 DATA_DIR = 'data'
 
 
-@app.route('/sso/login-page')
-def sso_login_page():
-    """SSO登录页面"""
-    return render_template('sso_login.html')
-
-
 @app.route('/sso/config', methods=['GET'])
 def sso_config():
     """返回SSO配置信息"""
