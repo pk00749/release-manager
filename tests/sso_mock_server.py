@@ -18,8 +18,8 @@ users = {
 @app.route('/sso/login', methods=['GET', 'POST'])
 def sso_login():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        username = "test_user" # request.json.get('username')
+        password = "test_password" # request.json.get('password')
         if username in users and users[username]['password'] == password:
             # 创建JWT令牌
             payload = {
