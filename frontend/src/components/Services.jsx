@@ -13,7 +13,7 @@ const Services = () => {
   useEffect(() => {
     const fetchApps = async () => {
       try {
-        const response = await fetch('http://localhost:5001', {
+        const response = await fetch('http://localhost:5001/services', {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -52,7 +52,7 @@ const Services = () => {
 
   return (
     <Container className="main-container">
-      <h1 className="mb-4">应用列表</h1>
+      <h1 className="mb-4">Services</h1>
       {error && (
         <Alert variant="warning" className="mb-4">
           无法从服务器获取应用列表: {error}

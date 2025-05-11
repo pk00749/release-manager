@@ -17,7 +17,7 @@ def read_apps_json():
         return {}
 
 # 主页面
-@app.route('/')
+@app.route('/services')
 def index():
     apps = read_apps_json()
     return jsonify(list(apps.keys()))

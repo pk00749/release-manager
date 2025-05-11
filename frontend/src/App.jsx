@@ -11,7 +11,7 @@ function App() {
     <Router>
       <NavBar />
       <Routes>
-        <Route path="/" element={<Services />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/:serviceId" element={<ServiceVersion />} />
         <Route path="/:serviceId/:version" element={<VersionDetail />} />
         <Route path="/login" element={<Login />} />
