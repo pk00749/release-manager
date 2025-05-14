@@ -11,6 +11,9 @@ app.secret_key = 'sp_secret_key'
 # JWT配置
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=30)
+# app.config['JWT_TOKEN_LOCATION'] = ['headers']  # 从请求头中获取token
+# app.config['JWT_HEADER_NAME'] = 'Authorization'  # 指定请求头名称
+# app.config['JWT_HEADER_TYPE'] = 'Bearer'  # 指定token类型
 jwt = JWTManager(app)
 
 SSO_SERVER = 'http://localhost:5002'
@@ -52,10 +55,11 @@ def callback():
 
 
 @app.route('/dashboard')
+# @jwt_required(optional=True)
 def dashboard():
     if 'access_token' not in session:
         return redirect(url_for('login'))
-
+    # current_user = get_jwt_identity()
     # 验证token
     headers = {'Authorization': f"Bearer {session['access_token']}"}
     verify_response = requests.get(f"{SSO_SERVER}/sso/verify", headers=headers)
@@ -70,7 +74,7 @@ def dashboard():
     return redirect(url_for('login'))
 
 
-@app.route('/api/protected')
+@app.route('/protected')
 def protected():
     if 'access_token' not in session:
         return jsonify({'error': 'Not authenticated'}), 401
