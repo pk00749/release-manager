@@ -10,6 +10,10 @@ app.secret_key = 'sso_secret_key'
 # JWT配置
 JWT_SECRET = 'your_jwt_secret'
 JWT_ALGORITHM = 'HS256'
+# JWT配置
+app.config['JWT_TOKEN_LOCATION'] = ['headers']  # 从请求头中获取token
+app.config['JWT_HEADER_NAME'] = 'Authorization'  # 指定请求头名称
+app.config['JWT_HEADER_TYPE'] = 'Bearer'  # 指定token类型
 
 # 模拟用户数据库
 USERS = {
@@ -20,23 +24,17 @@ USERS = {
 @app.route('/sso/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        # 创建JWT token
+        payload = {
+            'user': "test_user",
+            'exp': datetime.utcnow() + timedelta(minutes=30)
+        }
+        token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+        session['access_token'] = token
 
-        if username in USERS and USERS[username] == password:
-            # 创建JWT token
-            payload = {
-                'user': username,
-                'exp': datetime.utcnow() + timedelta(minutes=30)
-            }
-            token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
-            session['token'] = token
-
-            # 获取回调URL
-            redirect_uri = request.args.get('redirect_uri', 'http://localhost:5001/callback')
-            return redirect(f"{redirect_uri}?code=12345")
-
-        return "Invalid credentials", 401
+        # 获取回调URL
+        redirect_uri = request.args.get('redirect_uri', 'http://localhost:5001/callback')
+        return redirect(f"{redirect_uri}?code=12345")
 
     return '''
         <form method="post">
@@ -62,7 +60,8 @@ def token():
             'user': 'test_user',
             'exp': datetime.utcnow() + timedelta(minutes=30)
         }
-        token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+        token = jwt.encode(payload, JWT_SECRET, algorithm='HS256')
+        print(f"create: {token}")
         return jsonify({
             'access_token': token,
             'token_type': 'Bearer',
@@ -79,15 +78,16 @@ def verify():
 
     token = auth_header.split(' ')[1]
     try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        print(f"verify: {token}")
+        payload = jwt.decode(token, JWT_SECRET, algorithms='HS256')
         return jsonify({
             'user': payload['user'],
             'status': 'authenticated'
         })
     except jwt.ExpiredSignatureError:
         return jsonify({'error': 'Token has expired'}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({'error': 'Invalid token'}), 401
+    except jwt.InvalidTokenError as ite:
+        return jsonify({'error': f'Invalid token: {ite}'}), 401
 
 
 if __name__ == '__main__':
